@@ -8,7 +8,7 @@ In order to create new "Video Ad spots"  or new ItemPurchase views, click the "S
 ("located next to the component menu") and choose either of the options.
 ----------------------------------------------------------------------------------------
 
-I tied to decouple the classes as much as possible. 
+I tried to decouple the classes as much as possible. 
 
 The purchase view (presented as an overlay) is comprised of 3 elements:
 1)User input reader - responsible for reading user input and manipulation it into json format.
@@ -20,7 +20,7 @@ The video ad (presented in world space so it can be used on billboards) is compr
 )Request handler - responsible for handling requests to the server and downloading 
 the video - if nessecary.
 
-The only design pattern I ended up using is the Observer Pattern which allowed me to decouple 
+The only design pattern I ended up using is the "Observer Pattern" which allowed me to decouple 
 the classes using events.
 
 Some of the functionallity required the use of async programming.
