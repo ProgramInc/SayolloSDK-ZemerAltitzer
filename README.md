@@ -25,7 +25,7 @@ the classes using events.
 
 Some of the functionallity required the use of async programming.
 For server requests - I used an IEnumerator (Couroutine) as shown in the 
-manual (my intuition was to use an async function to avoid cluttering the main thread with the server requests).
+manual (my intuition however was to use an async function to avoid cluttering the main thread with the server requests).
 For other cases I mostly used async/await and event invocation.
 
 
