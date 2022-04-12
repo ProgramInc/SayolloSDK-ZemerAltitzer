@@ -6,6 +6,7 @@ Drag or paste the folder into your project's Assets folder.
 
 In order to create new "Video Ad spots"  or new ItemPurchase views, click the "Sayollo" menu
 ("located next to the component menu") and choose either of the options.
+A new GameObject will be added to your hirarchy.
 ----------------------------------------------------------------------------------------
 
 I tried to decouple the classes as much as possible. 
