@@ -17,7 +17,7 @@ The purchase view (presented as an overlay) is comprised of 3 elements:
 
 The video ad (presented in world space so it can be used on billboards) is comprised of 2 elements:
 1)Video handler - responsible for preparing the video and playing it
-)Request handler - responsible for handling requests to the server and downloading 
+2)Request handler - responsible for handling requests to the server and downloading 
 the video - if nessecary.
 
 The only design pattern I ended up using is the "Observer Pattern" which allowed me to decouple 
