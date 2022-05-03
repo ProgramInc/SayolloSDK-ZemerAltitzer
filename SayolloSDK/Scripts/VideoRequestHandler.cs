@@ -11,9 +11,9 @@ public class VideoRequestHandler : MonoBehaviour
     public string VideoLink { get; private set; }
 
 
-    public void RequestAd()
+    public IEnumerator RequestAd()
     {
-        StartCoroutine(GetRequest(adUri));
+        yield return StartCoroutine(GetRequest(adUri));
         StartCoroutine(DownloadVideoIfDoesntExistOnDevice());
     }
 
@@ -50,8 +50,8 @@ public class VideoRequestHandler : MonoBehaviour
             XmlNode root = xmlDocument.FirstChild;
             if (root.HasChildNodes)
             {
-                XmlNode secondChild = root.ChildNodes[0].FirstChild;
-                string rawLink = secondChild.InnerText;
+                XmlNode firstChild = root.ChildNodes[0].FirstChild;
+                string rawLink = firstChild.InnerText;
                 VideoLink = rawLink.Substring(8);
             }
         }
@@ -59,11 +59,6 @@ public class VideoRequestHandler : MonoBehaviour
 
     IEnumerator DownloadVideoIfDoesntExistOnDevice()
     {
-        while (VideoLink == null)
-        {
-            yield return null;
-        }
-
         string escapedFileName = UnityWebRequest.EscapeURL(VideoLink);
         EscapedPathToFile = string.Format("{0}/{1}", Application.persistentDataPath, escapedFileName);
 
