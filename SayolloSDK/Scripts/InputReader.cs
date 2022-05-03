@@ -2,6 +2,7 @@
 using UnityEngine;
 using TMPro;
 
+
 [RequireComponent(typeof(PurchaseView))]
 [RequireComponent(typeof(PurchaseViewRequestHandler))]
 public class InputReader : MonoBehaviour
@@ -34,20 +35,7 @@ public class InputReader : MonoBehaviour
             }
         }
 
-        //Format the user input as json and invoke the OnPurchaseSubmitted event 
-        //which will send the json string to the PurchaseRequestHandler
-        Dictionary<string, string> dictionary = new Dictionary<string, string>();
-        dictionary.Add("\'email_address\'", "\'" + emailInputField.text + "\'");
-        dictionary.Add("\'credit_card_number\'", "\'" + creditCardInputField.text + "\'");
-        dictionary.Add("\'expiration_date\'", "\'" + ExpirationDateInputField.text + "\'");
-        string dictionaryString = "{";
-
-        foreach (KeyValuePair<string, string> keyValuePair in dictionary)
-        {
-            dictionaryString += keyValuePair.Key + " : " + keyValuePair.Value + ", ";
-        }
-        dictionaryString = dictionaryString.TrimEnd(',', ' ') + "}";
-
-        OnPurchaseSubmitted?.Invoke(dictionaryString);
+        CustomerDetails customerDetails = new CustomerDetails(emailInputField.text, creditCardInputField.text, ExpirationDateInputField.text); ;
+        OnPurchaseSubmitted?.Invoke(customerDetails.ToJson());
     }
 }

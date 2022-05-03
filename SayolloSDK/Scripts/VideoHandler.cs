@@ -15,7 +15,7 @@ public class VideoHandler : MonoBehaviour
     VideoPlayer videoPlayer;
     VideoRequestHandler videoRequestHandler;
     GameObject adLoadingPanel;
-    TextMeshProUGUI textMesh;    
+    TextMeshProUGUI adLoadingText;
     bool wasPlaying;
 
     private void Awake()
@@ -23,11 +23,12 @@ public class VideoHandler : MonoBehaviour
         videoPlayer = GetComponent<VideoPlayer>();
         videoRequestHandler = GetComponent<VideoRequestHandler>();
         adLoadingPanel = GetComponentInChildren<Canvas>().gameObject;
-        textMesh = adLoadingPanel.GetComponentInChildren<TextMeshProUGUI>();
+        adLoadingText = adLoadingPanel.GetComponentInChildren<TextMeshProUGUI>();
         adLoadingPanel.gameObject.SetActive(true);
-        videoRequestHandler.RequestAd();
-        textMesh.text = "Loading Ad..";
+        adLoadingText.text = "Loading Ad..";
         wasPlaying = false;
+        
+        videoRequestHandler.StartCoroutine(videoRequestHandler.RequestAd());
     }
 
     private async void OnBecameVisible()
@@ -57,11 +58,7 @@ public class VideoHandler : MonoBehaviour
         //Rescale The Ad while maintaining it's aspect ratio
         transform.localScale = new Vector3(videoPlayer.width * rescaleFactor / 100, videoPlayer.height * rescaleFactor / 100, 1f);
 
-        //Disable the Ad Loading Screen
-        if (adLoadingPanel.gameObject.activeInHierarchy)
-        {
-            adLoadingPanel.gameObject.SetActive(false);
-        }
+        adLoadingPanel.gameObject.SetActive(false);
     }
 
     private async Task GetVideoLinkAsync()
@@ -85,7 +82,6 @@ public class VideoHandler : MonoBehaviour
         while (videoRequestHandler.VideoLink == null)
         {
             await Task.Yield();
-
         }
         return videoRequestHandler.VideoLink;
     }

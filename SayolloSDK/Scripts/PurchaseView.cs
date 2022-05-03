@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
-using TMPro;
 using UnityEngine.UI;
+using TMPro;
+
 
 [RequireComponent(typeof(InputReader))]
 [RequireComponent(typeof(PurchaseViewRequestHandler))]
@@ -12,47 +13,52 @@ public class PurchaseView : MonoBehaviour
     [SerializeField] TextMeshProUGUI itemName;
     [SerializeField] TextMeshProUGUI itemPrice;
     [SerializeField] RawImage itemImage;
-    [SerializeField] GameObject itemPanel;
     [SerializeField] GameObject loadingPanel;
+    [SerializeField] GameObject itemPanel;
     [SerializeField] GameObject purchasePanel;
     [SerializeField] GameObject purchaseCompletePanel;
 
-    public PurchaseViewItem item;
 
-    private void Awake()
+    void Awake()
     {
         itemPanel.SetActive(false);
         purchasePanel.SetActive(false);
         purchaseCompletePanel.SetActive(false);
         loadingText.text = "Loading Item..";
+
+        if (!loadingPanel.activeSelf)
+        {
+            loadingPanel.SetActive(true);
+        }
     }
 
-    private void OnEnable()
+    void OnEnable()
     {
         PurchaseViewRequestHandler.OnImageReceived += DisplayItem;
-        PurchaseViewRequestHandler.OnServerConfirmedOrder += PurchaseConfimed;
+        PurchaseViewRequestHandler.OnPurchaseResponseFromServer += PurchaseConfimed;
     }
 
-    private void OnDisable()
+    void OnDisable()
     {
         PurchaseViewRequestHandler.OnImageReceived -= DisplayItem;
-        PurchaseViewRequestHandler.OnServerConfirmedOrder -= PurchaseConfimed;
+        PurchaseViewRequestHandler.OnPurchaseResponseFromServer -= PurchaseConfimed;
     }
 
     void DisplayItem(Vector2 imageSize, Texture texture, PurchaseViewItem item)
     {
         itemImage.rectTransform.sizeDelta = imageSize;
         itemImage.texture = texture;
-        itemTitle.text = item.title.Substring(1, item.title.Length - 2);
-        itemName.text = item.itemName.Substring(1, item.itemName.Length - 2);
-        itemPrice.text = string.Format("{0}{1} ({2})", item.price.Substring(1, item.price.Length - 1), item.currencySign.Substring(1, item.currencySign.Length - 2), item.currency.Substring(1, item.currency.Length - 2));
-        this.item = item;
+        itemTitle.text = item.title;
+        itemName.text = item.item_name;
+        itemPrice.text = string.Format("{0}{1} ({2})", item.price, item.currency_sign, item.currency);
+
         itemPanel.SetActive(true);
         loadingPanel.SetActive(false);
     }
 
-    void PurchaseConfimed()
+    void PurchaseConfimed(string statusMessage)
     {
+        purchaseCompletePanel.GetComponentInChildren<TextMeshProUGUI>().SetText(statusMessage);
         purchasePanel.SetActive(false);
         purchaseCompletePanel.SetActive(true);
     }
